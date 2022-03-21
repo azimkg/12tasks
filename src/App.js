@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Account from "./components/Account/Account";
+import ContactList from "./components/ContactList/ContactList";
+import SignUp from "./components/SignUp/SignUp";
+import ContactsContextProvider from "./Context/ContextContacts";
+import Form from "./Form";
 
-function App() {
+const App = () => {
+  let [isLogin, setIsLogin] = useState(false);
+  let [info, setInfo] = useState([]);
+
+  function handleAddObj(newUser) {
+    let newInfo = [...info];
+    newInfo.push(newUser);
+    setInfo(newInfo);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ContactsContextProvider>
+      <Form />
+      {isLogin ? (
+        <Account setIsLogin={setIsLogin} info={info} />
+      ) : (
+        <SignUp setIsLogin={setIsLogin} handleAddObj={handleAddObj} />
+      )}
+      <ContactList />
+    </ContactsContextProvider>
   );
-}
+};
 
 export default App;
